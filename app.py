@@ -1,7 +1,7 @@
 # app.py
 import os
 import random
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_socketio import SocketIO, send
 from sqlalchemy import create_engine, Column, Integer, String, Float
@@ -11,7 +11,9 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 # Configuració
 # ---------------------
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DB_PATH = os.path.join(BASE_DIR, 'database', 'sim.db')
+DB_DIR = os.path.join(BASE_DIR, 'database')
+os.makedirs(DB_DIR, exist_ok=True)
+DB_PATH = os.path.join(DB_DIR, 'sim.db')
 SECRET_KEY = "canvia_a_alguna_clau_llarga_i_secreta"
 
 # ---------------------
@@ -19,7 +21,9 @@ SECRET_KEY = "canvia_a_alguna_clau_llarga_i_secreta"
 # ---------------------
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
-socketio = SocketIO(app, async_mode='eventlet')  # WebSocket per xat
+
+# ⚡ Async mode threading per evitar errors a Python 3.13
+socketio = SocketIO(app, async_mode='threading')  
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -77,7 +81,6 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def index():
-    # Pantalla del mòbil virtual amb enllaços a apps
     return render_template('index.html', sim_id=current_user.sim_id, username=current_user.username)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -103,11 +106,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # Comprova que no existeixi
         existing = db_session.query(User).filter_by(username=username).first()
         if existing:
             return "Usuari ja existeix"
-        # Genera SIM única
         sim_id = f"SIM-CA-{random.randint(100,999)}-{random.randint(1000,9999)}"
         new_user = User(username=username, password_hash=password, sim_id=sim_id)
         db_session.add(new_user)
@@ -123,7 +124,7 @@ def handle_message(msg):
     send(msg, broadcast=True)
 
 # ---------------------
-# Apps estàtiques (banc, creador)
+# Apps estàtiques
 # ---------------------
 @app.route('/bank')
 @login_required
