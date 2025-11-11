@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🏨 Hotel RP</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2, h3 { color: #4B3266; }
+    .card {
+      border: 1px solid #ddd; border-radius: 10px;
+      padding: 15px; margin: 10px 0; background: #f9f9f9;
+    }
+    button, input, select {
+      padding: 8px; margin-top: 5px;
+      font-size: 1em; border-radius: 6px; border: 1px solid #aaa;
+    }
+    button { background: #4B3266; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>🏨 Hotel RP</h2>
+  <p>Benvingut al nostre hotel! Reserva habitacions ràpidament.</p>
+
+  <h3>Nova reserva</h3>
+  <form>
+    <label>Tipus d’habitació:</label><br>
+    <select name="room_type" required>
+      <option>Bàsica</option>
+      <option>Suite</option>
+      <option>Luxe</option>
+    </select><br>
+    <label>Entrada:</label><br>
+    <input type="date" name="check_in" required><br>
+    <label>Sortida:</label><br>
+    <input type="date" name="check_out" required><br>
+    <button type="button" onclick="alert('Reserva enviada!')">Reservar</button>
+  </form>
+
+  <hr>
+
+  <h3>Les meves reserves</h3>
+  <div class="card">
+    <p>Habitació: <strong>Suite</strong></p>
+    <p>Entrada: 12/11/2025 — Sortida: 14/11/2025</p>
+    <button onclick="alert('Reserva cancel·lada!')">Cancel·lar</button>
+  </div>
+
+  <div class="card">
+    <p>Habitació: <strong>Bàsica</strong></p>
+    <p>Entrada: 15/11/2025 — Sortida: 16/11/2025</p>
+    <button onclick="alert('Reserva cancel·lada!')">Cancel·lar</button>
+  </div>
+</body>
+</html>
