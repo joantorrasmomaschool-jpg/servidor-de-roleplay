@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menú RP - Estil iOS</title>
+  <style>
+    body {
+      background: #eff2fa;
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .ipad-frame {
+      width: 390px;
+      height: 700px;
+      background: #fff;
+      border-radius: 36px;
+      box-shadow: 0 10px 38px rgba(80,55,200,0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .statusbar {
+      height: 32px;
+      width: 100%;
+      background: #edf1f8;
+      border-bottom: 1px solid #c2cbe0;
+      text-align: right;
+      padding: 6px 26px 0 0;
+      font-size: .94em;
+      color: #b2b2b2;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin: 38px 20px 0 20px;
+      width: calc(100% - 40px);
+      justify-items: center;
+    }
+    .app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #433478;
+      font-weight: 600;
+    }
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: linear-gradient(150deg,#b4aee8,#e7d2ff 50%,#cdf4ff 80%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8em;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 18px rgba(122,100,250,0.11);
+      user-select: none;
+    }
+    .logout-btn {
+      margin-top: 24px;
+      color: #b94e55;
+      background: none;
+      border: none;
+      font-size: 1.04em;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    @media (max-width: 430px) {
+      .ipad-frame { width: 98vw; height: 98vh; border-radius: 20px; }
+      .menu-grid { gap: 18px; grid-template-columns: repeat(3, 1fr);}
+    }
+  </style>
+</head>
+<body>
+  <div class="ipad-frame">
+    <div class="statusbar">RP-SIM | {{ current_user.username }}</div>
+    <div class="menu-grid">
+      <a class="app" href="{{ url_for('bank') }}">
+        <div class="app-icon">🏦</div>Banc
+      </a>
+      <a class="app" href="{{ url_for('hotel') }}">
+        <div class="app-icon">🏨</div>Hotel
+      </a>
+      <a class="app" href="{{ url_for('globo') }}">
+        <div class="app-icon">🎈</div>Globo
+      </a>
+      <a class="app" href="{{ url_for('creator') }}">
+        <div class="app-icon">🧰</div>Creador apps
+      </a>
+      <a class="app" href="{{ url_for('admin_panel') }}">
+        <div class="app-icon">🔒</div>Admin
+      </a>
+    </div>
+    <form method="GET" action="{{ url_for('logout') }}">
+      <button class="logout-btn" type="submit">Sortir</button>
+    </form>
+  </div>
+</body>
+</html>
