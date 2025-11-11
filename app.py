@@ -238,6 +238,25 @@ def handle_leave(data):
 def handle_call(data):
     emit("incoming_call", data, broadcast=True)
 
+# Servei de register
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        # Comprova que no existeixi l'usuari
+        user = db_session.query(User).filter_by(username=username).first()
+        if user:
+            return "Usuari ja existeix"
+        # Crea nou usuari
+        new_user = User(username=username, password=password)
+        db_session.add(new_user)
+        db_session.commit()
+        return redirect(url_for("login"))
+    return render_template("register.html")
+
 # ----------------------------------------------------
 # Execució
 # ----------------------------------------------------
