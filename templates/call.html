@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📞 Trucades RP</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #incoming { margin-bottom: 20px; }
+    button { padding: 8px 12px; margin: 5px; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h2>📞 Trucades RP</h2>
+
+  <div id="incoming">No hi ha trucades entrants.</div>
+  <input id="target_user" placeholder="Usuari a trucar" />
+  <button id="call_btn">Trucar</button>
+
+  <script>
+    const socket = io();
+    const username = "{{ username }}";
+
+    // Quan rebem una trucada
+    socket.on("incoming_call", data => {
+      const incomingDiv = document.getElementById("incoming");
+      incomingDiv.textContent = `Trucada entrant de ${data.from}`;
+      // Podem afegir accepta/rebutja aquí si vols
+    });
+
+    document.getElementById("call_btn").addEventListener("click", () => {
+      const target = document.getElementById("target_user").value.trim();
+      if(target !== "") {
+        socket.emit("call", { from: username, to: target });
+        alert(`Trucant a ${target}...`);
+      }
+    });
+  </script>
+</body>
+</html>
