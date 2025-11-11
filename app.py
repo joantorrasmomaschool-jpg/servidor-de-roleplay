@@ -1,6 +1,6 @@
-# app.py — servidor RP lleuger per Render
+# app.py — servidor Flask + SocketIO lleuger per Render
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from sqlalchemy import create_engine, Column, Integer, String
@@ -10,16 +10,17 @@ import secrets
 
 # --- Configuració bàsica ---
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
-port = int(os.environ.get("PORT", 5000))
 
-# Base de dades SQLite
+# Clau secreta segura (carregada de variable d'entorn o generada automàticament)
+app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
+
+# Base de dades SQLite local
 engine = create_engine("sqlite:///database.db", echo=False)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
 db_session = SessionLocal()
 
-# --- Login manager ---
+# --- Sistema de login ---
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -89,30 +90,35 @@ def admin_panel():
     return render_template("admin.html")
 
 # --- SocketIO / xat ---
-socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*")
+socketio = SocketIO(app, async_mode="threading", cors_allowed_origins="*")
 
 @socketio.on("join")
 def handle_join(data):
     room = data.get("room")
+    username = data.get("username")
     join_room(room)
-    send(f"{data.get('username')} s'ha unit a {room}", to=room)
+    send(f"{username} s'ha unit a {room}", to=room)
 
 @socketio.on("message")
 def handle_message(data):
     room = data.get("room")
-    send(f"{data.get('username')}: {data.get('msg')}", to=room)
+    username = data.get("username")
+    msg = data.get("msg")
+    send(f"{username}: {msg}", to=room)
 
 @socketio.on("leave")
 def handle_leave(data):
     room = data.get("room")
+    username = data.get("username")
     leave_room(room)
-    send(f"{data.get('username')} ha sortit de {room}", to=room)
+    send(f"{username} ha sortit de {room}", to=room)
 
-# --- Esdeveniments SIM / trucades ---
+# --- Esdeveniments SIM (trucades) ---
 @socketio.on("call")
 def handle_call(data):
     emit("incoming_call", data, broadcast=True)
 
-# --- Arrencada ---
+# --- Execució ---
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
     socketio.run(app, host="0.0.0.0", port=port, debug=False, allow_unsafe_werkzeug=True)
