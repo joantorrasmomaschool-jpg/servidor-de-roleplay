@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💬 Xat RP</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; margin-bottom: 10px; }
+    input, button { padding: 8px; margin: 5px 0; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h2>💬 Xat RP</h2>
+  <div id="messages"></div>
+  <input id="msg_input" placeholder="Escriu un missatge..." />
+  <button id="send_btn">Enviar</button>
+
+  <script>
+    const socket = io();
+    const username = "{{ username }}";
+    const room = "global"; // pots canviar-ho a una sala concreta
+
+    socket.emit("join", { username, room });
+
+    socket.on("message", data => {
+      const messages = document.getElementById("messages");
+      const el = document.createElement("div");
+      el.textContent = data;
+      messages.appendChild(el);
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    document.getElementById("send_btn").addEventListener("click", () => {
+      const msg = document.getElementById("msg_input").value;
+      if(msg.trim() !== "") {
+        socket.emit("message", { username, room, msg });
+        document.getElementById("msg_input").value = "";
+      }
+    });
+
+    // Permet enviar amb Enter
+    document.getElementById("msg_input").addEventListener("keydown", (e) => {
+      if(e.key === "Enter") document.getElementById("send_btn").click();
+    });
+
+    // Sortir de la sala quan tanquem la finestra
+    window.addEventListener("beforeunload", () => {
+      socket.emit("leave", { username, room });
+    });
+  </script>
+</body>
+</html>
