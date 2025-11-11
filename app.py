@@ -258,6 +258,27 @@ def register():
     return render_template("register.html")
 
 # ----------------------------------------------------
+# Chat App
+# ----------------------------------------------------
+
+@app.route("/chat")
+@login_required
+def chat():
+    # Només retornem la plantilla del xat
+    return render_template("chat.html", username=current_user.username)
+
+# ----------------------------------------------------
+# Call App
+# ----------------------------------------------------
+
+@app.route("/call")
+@login_required
+def call():
+    # Només retornem la plantilla de trucades
+    return render_template("call.html", username=current_user.username)
+
+
+# ----------------------------------------------------
 # Execució
 # ----------------------------------------------------
 
