@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <title>Creador d’aplicacions RP</title>
+</head>
+<body>
+  <h2>Creador d’aplicacions RP</h2>
+  <form action="{{ url_for('create_app') }}" method="post">
+    <input name="name" placeholder="Nom de l’app" required>
+    <input name="icon" placeholder="Nom d’icona (opcional)">
+    <textarea name="description" placeholder="Descripció..."></textarea>
+    <textarea name="html_code" placeholder="Codi HTML o URL..."></textarea>
+    <button type="submit">Crear</button>
+  </form>
+
+  <hr>
+
+  <div>
+    {% for a in apps %}
+    <div style="border:1px solid #ccc; margin:10px; padding:10px;">
+      <img src="{{ url_for('static', filename='icons/' + a.icon) }}" alt="{{ a.name }}" width="50" />
+      <h3>{{ a.name }}</h3>
+      <p>{{ a.description }}</p>
+      <form action="{{ url_for('delete_app', app_id=a.id) }}" method="post" style="display:inline;">
+        <button type="submit">Eliminar</button>
+      </form>
+      <a href="{{ url_for('view_app', app_id=a.id) }}">Previsualitzar</a>
+    </div>
+    {% else %}
+    <p>No tens aplicacions creades.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>
