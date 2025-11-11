@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <title>Previsualització: {{ app.name }}</title>
+</head>
+<body>
+  <h2>{{ app.name }}</h2>
+  <p><strong>Descripció:</strong> {{ app.description }}</p>
+  <div style="border:1px solid #888; padding:10px; margin-top:20px;">
+    {{ app.html_code | safe }}
+  </div>
+  <p><a href="{{ url_for('creator') }}">Torna al creador</a></p>
+</body>
+</html>
