@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - al servidor</title>
+  <style>
+    body {
+      background: linear-gradient(120deg, #2980b9, #8e44ad);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+    }
+    .login-box {
+      background: rgba(255,255,255,.95);
+      border-radius: 18px;
+      box-shadow: 0 6px 48px rgba(0,0,0,0.13);
+      padding: 2.5em 2em 2em 2em;
+      width: 340px;
+      text-align: center;
+      animation: fadeIn .7s;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform: translateY(-30px);}
+      to { opacity:1; }
+    }
+    .login-box h2 {
+      margin-bottom: 1.3em;
+      color: #4B3266;
+    }
+    .login-box input {
+      width: 90%;
+      padding: 12px 10px;
+      margin: .7em 0;
+      border: 1.3px solid #aaa;
+      border-radius: 10px;
+      font-size: 1em;
+    }
+    .login-box button {
+      margin-top: 1em;
+      background: #7656d1;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-weight: 600;
+      padding: 12px 0;
+      font-size: 1.1em;
+      width: 75%;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .login-box button:hover {
+      background: #6143b2;
+    }
+  </style>
+</head>
+<body>
+  <form class="login-box" method="POST">
+    <h2>Inicia sessió</h2>
+    <input type="text" name="username" placeholder="Usuari" autofocus required>
+    <input type="password" name="password" placeholder="Contrasenya" required>
+    <button type="submit">Entrar</button>
+  </form>
+</body>
+</html>
