@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🏦 Bank RP</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2, h3 { color: #4B3266; }
+    form input, form button { margin: 5px 0; padding: 8px; font-size: 1em; }
+    #reader { width: 300px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>🏦 El meu compte bancari</h2>
+
+  <p>Saldo actual: <strong>{{ account.balance }} €</strong></p>
+
+  <h3>El meu codi QR</h3>
+  <img src="{{ url_for('bank_qr', user_id=current_user.id) }}" width="200" alt="QR del compte" />
+
+  <hr>
+
+  <h3>Enviar diners</h3>
+  <form action="{{ url_for('bank_transfer') }}" method="post">
+    <input id="target_qr" name="target_qr" placeholder="Codi QR destinatari" required />
+    <input name="amount" type="number" placeholder="Quantitat" required min="1" />
+    <button type="submit">Enviar</button>
+  </form>
+
+  <hr>
+
+  <h3>Escanejar codi QR</h3>
+  <div id="reader"></div>
+
+<script>
+  const qrScanner = new Html5Qrcode("reader");
+  qrScanner.start(
+    { facingMode: "environment" }, 
+    { fps: 10, qrbox: 250 },
+    (decodedText) => {
+      document.getElementById("target_qr").value = decodedText;
+      alert("Codi detectat: " + decodedText);
+      qrScanner.stop();
+    }
+  );
+</script>
+
+</body>
+</html>
