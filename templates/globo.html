@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🚴‍♂️ Globo RP</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2, h3 { color: #4B3266; }
+    .order {
+      border: 1px solid #ddd; border-radius: 10px;
+      padding: 15px; margin: 10px 0; background: #f9f9f9;
+    }
+    button, input {
+      padding: 8px; margin-top: 5px;
+      font-size: 1em; border-radius: 6px; border: 1px solid #aaa;
+    }
+    button { background: #4B3266; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>🚴‍♂️ Globo RP</h2>
+  <p>Fes encàrrecs o entrega com a repartidor RP!</p>
+
+  <h3>Nou encàrrec</h3>
+  <form>
+    <input name="item" placeholder="Producte (ex: Pizza, cafè...)" required /><br>
+    <input name="address" placeholder="Adreça de lliurament" required /><br>
+    <input name="price" type="number" placeholder="Preu (€)" required /><br>
+    <button type="button" onclick="alert('Encàrrec creat!')">Crear encàrrec</button>
+  </form>
+
+  <hr>
+
+  <h3>Encàrrecs disponibles</h3>
+  <div class="order">
+    <p><strong>Pizza familiar</strong> — 10 €</p>
+    <p>Adreça: Carrer Major, 12</p>
+    <button onclick="alert('Encàrrec acceptat!')">Acceptar</button>
+  </div>
+
+  <div class="order">
+    <p><strong>Cafè amb llet</strong> — 3 €</p>
+    <p>Adreça: Plaça del Poble</p>
+    <button onclick="alert('Encàrrec acceptat!')">Acceptar</button>
+  </div>
+</body>
+</html>
