@@ -17,7 +17,8 @@ port = int(os.environ.get("PORT", 5000))
 
 # PostgreSQL URL
 DB_URL = os.environ.get("DATABASE_URL", "postgresql://base_de_dades_del_servidor_de_roleplay_user:B81Ot8N9NjJ6KF7ZbXpTqzOcjwsPEXhk@dpg-d49nsnripnbc73969m0g-a/base_de_dades_del_servidor_de_roleplay")
-engine = create_engine(DB_URL, echo=False)
+# AMB psycopg
+engine = create_engine(DB_URL.replace("postgresql://", "postgresql+psycopg://"), echo=False)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
 db_session = SessionLocal()
