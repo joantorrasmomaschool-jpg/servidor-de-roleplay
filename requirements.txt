@@ -1,6 +1,5 @@
 Flask==2.3.3
 Flask-Login==0.6.3
 Flask-SocketIO==5.5.1
-SQLAlchemy==1.4.48
 qrcode==8.2
 psycopg==3.2.12
